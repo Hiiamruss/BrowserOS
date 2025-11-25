@@ -36,15 +36,94 @@
       </select>
     </section>
     
-    <section class="screen">
-      <p>Nuke is not supported yet on this BeckOS Web version. </p>
+    <section class="screen" id="screen">
+      <p>Insert Command, do /help for a list of commands.</p>
+      <input type="text" placeholder="Enter Command...>" id="command">
+      <button onclick="HandleCommand()">Run</button>
+      <p id="output">Output></p>
     </section>
     
     <section class="taskbar">
     </section>
     <script>
-      let settings = JSON.parse(localStorage.getItem("settings"))
+      function HandleCommand() {
       
+      let installed = {
+        "amidis": "notinstalled"
+      }
+
+      if (!localStorage.getItem("installer")) {
+        localStorage.setItem("installer", JSON.stringify(installed))
+      }
+
+      let installer = JSON.parse(localStorage.getItem("installer"))
+      let output = document.getElementById("output");
+      let command = document.getElementById("command").value;
+      let adminsettings = JSON.parse(localStorage.getItem("adminsettings"))
+
+      let parts = command.split(" ")
+      let cmd = parts[0]
+      let arg = parts[1]
+      let arg2 = parts[2]
+
+        if (cmd === "/help") {
+          output.innerText = "/help - Help, /reboot - Restart, /say <word> - Makes system return string, /check <program> - Checks a programs eligablity. /install - Installs a database into the file.,";
+        } else if (cmd === "/reboot") {
+          window.location.href = "index.html";
+          alert("Reboot Successfull, no failures found.");
+        } else if (cmd === "/say") {
+            output.innerText = arg
+        } else if (cmd === "/check") {
+          if (arg === "chreme.bex") {
+            output.innerText = "Author: BeckOS Team"
+          } else if (arg === "nuke.bex") {
+            output.innerText = "Author: BeckOS"
+          } else {
+            output.innerText = "No program found."
+          }
+        } else if (cmd === "/checkver") {
+          if (arg === "chreme.bex") {
+            output.innerText = "Chreme.bex = v.1.2B"
+          } else if (arg === "nuke.bex") {
+            output.innerText = "Nuke.bex = v.1.9"
+          }
+        } else if (cmd === "/install") {
+          if (arg === "amidis") {
+            if (installer.amidis === "notinstalled") {
+               output.innerText = "Module amidis installed."
+               installer.amidis = "installed"
+               localStorage.setItem("installer", JSON.stringify(installer))
+            } else {
+              output.innerText = "Module already installed and satisfied."
+            }
+           
+          }
+        } else if (cmd === "/uninstall") {
+          if (arg === "amidis") {
+            if (installer.amidis === "installed") {
+              output.innerText = "Module successfully uninstalled."
+              installer.amidis = "notinstalled"
+              localStorage.setItem("installer", JSON.stringify(installer))
+            } else {
+              output.innerText = "Unable to locate such module."
+            }
+          }
+        } else if (cmd === "/amidis") {
+          if (installer.amidis === "installed") {
+            if (arg === "emulate") {
+            let iframe = document.createElement("iframe")
+            iframe.src = arg2
+            document.getElementById("screen").appendChild(iframe)
+            output.innerText = "Successfully emulated " + arg2
+          } else {
+            output.innerText = "Amidis v.1.2 has no attribute " + arg 
+          } 
+        } else {
+          output.innerText = "Module not found. Please install first."
+        }
+      }
+    }
+
       function HandleValue(value) {
         if (value === "quit") {
           window.location.href="index.html";

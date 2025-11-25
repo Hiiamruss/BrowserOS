@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BrowserOS v.1.0</title>
+  </head>
+  <style>
+  
+    .menubar {
+      padding:5px;
+      background-color:beige;
+      gap:10px;
+      
+      
+    }
+    .screen {
+      padding:125px;
+      background-color:white;
+    }
+    
+    .taskbar {
+      padding:25px;
+      background-color:black;
+    }
+    
+  </style>
+  <body>
+    <section class="menubar">
+      <select id="file" style="width:50px;" onchange="HandleValue(this.value)">
+        <option>File</option>
+        <option value="quit">Quit App</option>
+        <option value="uninst">Uninstall App</option>
+        <option value="nuke">Open Nuke Command</option>
+        <option value="settings">Open System Settings</option>
+      </select>
+      
+      <select id="chreme" style="width:100px;" onchange="HandleValue(this.value)">
+        <option>Chreme.bex</option>
+        <option value="properties">Open Program Properties</option>
+      </select>
+    </section>
+    
+    <section class="screen">
+      <h1>Admin Settings</h1>
+      <p>This BeckBook Emulation is protected by Hiiamruss Admins.</p>
+      <button onclick="HandleSettings('devmode')">Enable Dev Mode</button>
+      <input type="text" placeholder="New admin password" id="password">
+      <button onclick="HandleSettings('changepass')">Change Password</button>
+      <button onclick="alert('You do not have permission to view logs.')">Logs</button>
+      <button onclick="alert('You do not have permission to do this action.')">Admin Panel</button>
+    </section>
+    
+    <section class="taskbar">
+    </section>
+    <script>
+        function HandleSettings(item) {
+            let password = document.getElementById("password").value
+            let adminsettings = JSON.parse(localStorage.getItem("adminsettings"))
+            if (item === "devmode") {
+                adminsettings.devmode = "enabled";
+                alert("Devmode is on!");
+            } else if (item === "changepass") {
+                adminsettings.password = password;
+                alert("Password succesfully Changed!");
+            }
+
+        localStorage.setItem("adminsettings", JSON.stringify(adminsettings))
+        }
+        
+      function HandleValue(value) {
+        if (value === "quit") {
+          window.location.href="index.html";
+        } else if (value === "uninst") {
+          alert("You are not allowed to uninstall a root app.");
+        } else if (value == "nuke") {
+          alert("Nuke is very dangerous and can do very dangerous stuff. DISCLAIMER: THIS IS BETA v.1.2");
+          window.location.href="nuke.html"
+        } else if (value == "properties") {
+          window.location.href="chromeproperties.html";
+        }
+      }
+      
+    </script>
+  </body>
+</html>
