@@ -87,42 +87,9 @@
           } else if (arg === "nuke.bex") {
             output.innerText = "Nuke.bex = v.1.9"
           }
-        } else if (cmd === "/install") {
-          if (arg === "amidis") {
-            if (installer.amidis === "notinstalled") {
-               output.innerText = "Module amidis installed."
-               installer.amidis = "installed"
-               localStorage.setItem("installer", JSON.stringify(installer))
-            } else {
-              output.innerText = "Module already installed and satisfied."
-            }
-           
-          }
-        } else if (cmd === "/uninstall") {
-          if (arg === "amidis") {
-            if (installer.amidis === "installed") {
-              output.innerText = "Module successfully uninstalled."
-              installer.amidis = "notinstalled"
-              localStorage.setItem("installer", JSON.stringify(installer))
-            } else {
-              output.innerText = "Unable to locate such module."
-            }
-          }
-        } else if (cmd === "/amidis") {
-          if (installer.amidis === "installed") {
-            if (arg === "emulate") {
-            let iframe = document.createElement("iframe")
-            iframe.src = arg2
-            document.getElementById("screen").appendChild(iframe)
-            output.innerText = "Successfully emulated " + arg2
-          } else {
-            output.innerText = "Amidis v.1.2 has no attribute " + arg 
-          } 
-        } else {
-          output.innerText = "Module not found. Please install first."
         }
       }
-    }
+
 
       function HandleValue(value) {
         if (value === "quit") {
